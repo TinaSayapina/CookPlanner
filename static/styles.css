@@ -1,0 +1,106 @@
+  body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #f9fafc;
+    margin: 0;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #333;
+  }
+
+  h1 {
+    margin-top: 80px; /* чтобы учесть фиксированный навбар */
+    color: #6c5ce7;
+    margin-bottom: 20px;
+  }
+
+  .input-container {
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    gap: 10px;
+  }
+
+  input[type="text"] {
+    flex: 1;
+    padding: 12px 20px;
+    border: 2px solid #dfe6e9;
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  input[type="text"]:focus {
+    border-color: #6c5ce7;
+  }
+
+  button {
+    padding: 12px 20px;
+    background-color: #6c5ce7;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  button:hover {
+    background-color: #5a4bcf;
+  }
+
+  .results {
+    margin-top: 30px;
+    width: 100%;
+    max-width: 600px;
+  }
+
+  .recipe-title {
+    font-size: 1.5rem;
+    color: #6c5ce7;
+    margin-bottom: 15px;
+  }
+
+  h2 {
+    margin-top: 20px;
+    color: #636e72;
+  }
+
+  ul {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  li {
+    background-color: #e0e0e0;
+    padding: 10px;
+    margin-bottom: 8px;
+    border-radius: 6px;
+  }
+
+    /* Навбар стили */
+  .navbar {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end; /* Или заменить на 'center' для центрирования */
+  padding: 10px 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  position: fixed;
+  top: 0;
+  left: -43px;
+  z-index: 999;
+}
+  .navbar a {
+    margin-left: 20px;
+    text-decoration: none;
+    color: #6c5ce7;
+    font-weight: 600;
+    transition: color 0.2s;
+  }
+
+  .navbar a:hover {
+    color: #5036d2;
+  }
