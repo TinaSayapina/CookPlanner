@@ -2,6 +2,7 @@ fastapi~=0.115.12
 uvicorn
 sqlalchemy
 openai~=0.28.0
-
-
 pydantic~=2.11.4
+argon2-cffi
+authx
+regex

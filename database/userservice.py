@@ -2,33 +2,35 @@ from http.client import HTTPException
 
 from database import get_db
 from database.models import *
+from sqlalchemy import or_
+from hash_argon2 import *
 
 # Регистрация юзеров
-def add_user_db(username, phone_number, password):
-
+def registration_db(nickname, phone_number, password):
+    # Проверка на уникальность логина и телефона
     with next(get_db()) as db:
-        # Проверка на уникальность логина и телефона
-        user = db.query(User).filter(User.username == username or User.phone_number == phone_number).first()
+        user = db.query(User).filter(User.nickname == nickname).first()
+        text = ""
         if user:
-            return {
-                "status":0,
-                "message":"Такой логин или телефон уже занят"
-            }
-
-        # Внесение нового пользователя в БД
-
-        user = User(username=username, phone_number=phone_number, password=password)
-
-        if not user:
-            return{
-                "status": 0,
-                "message": "Не добавилось",
-            }
-
+            text += "- юзернейм\n"
+        user = db.query(User).filter(User.phone_number == phone_number).first()
+        if user:
+            text += "-номер\n"
+        if user:
+            return text + "уже занят(-ы)"
+        user = User(nickname=nickname, phone_number=phone_number, password=hash_password(password))
         db.add(user)
         db.commit()
         db.refresh(user)
-        return {
-            "status": 1,
-            "message": "Успешно добавлен",
-        }
+        return user.id
+
+
+# вход в аккаунт (по нику или номеру)
+def login_db(login, password):
+    with next(get_db()) as db:
+        user = db.query(User).filter(or_(User.nickname == login
+                                         , User.phone_number == login)).first()
+        if user:
+            if not check_pw(password, user.password):
+                return False
+            return user.id

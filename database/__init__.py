@@ -2,7 +2,7 @@ from sqlalchemy.engine import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 
 # формат и название нашей базы данных
-SQLALCHEMY_DATABASE_URI = "sqlite:///data1.db"
+SQLALCHEMY_DATABASE_URI = "sqlite:///data2.db"
 # вариант postgres
 # SQLALCHEMY_DATABASE_URI = "postgresql://postgres:admin@localhost/quiz61"
 #                            ^ формат     ^ юзер   ^пароль ^хост  ^ название бд

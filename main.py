@@ -5,6 +5,8 @@ from database import Base, engine
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from fastapi.responses import JSONResponse
+from authx.exceptions import AuthXException
 
 app = FastAPI(docs_url="/docs")
 
@@ -40,6 +42,9 @@ Base.metadata.create_all(bind=engine)
 app.include_router(recepe_router)
 app.include_router(user_router)
 
-@app.get("/ok")
-async def ok_endpoint():
-    return {"message":"Ok"}
+
+# обработка ошибки связанной с JWT
+@app.exception_handler(AuthXException)
+async def jwt_error(request: Request, exc: AuthXException):
+    return JSONResponse(status_code=401, content={"message": "вы не авторизованы\n"
+                                                             "Войдите в систему"})

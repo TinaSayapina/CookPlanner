@@ -10,7 +10,7 @@
 <div class="registration-form" style="margin-top: 40px; width: 100%; max-width: 400px;">
   <h2 style="color: #6c5ce7; margin-bottom: 20px;">Регистрация</h2>
   <form id="registerForm" style="display: flex; flex-direction: column; gap: 15px;">
-    <input type="text" id="username" placeholder="Логин" required
+    <input type="text" id="nickname" placeholder="Логин" required
       style="padding: 12px 20px; border: 2px solid #dfe6e9; border-radius: 8px; font-size: 1rem; outline: none; transition: border-color 0.2s;">
 
     <input type="tel" id="phone" placeholder="Телефон" required
@@ -31,7 +31,7 @@
   document.getElementById('registerForm').addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  const username = document.getElementById('username').value.trim();
+  const nickname = document.getElementById('nickname').value.trim();
   const phone_str = document.getElementById('phone').value.trim();
   const password = document.getElementById('password').value.trim();
   const password2 = document.getElementById('password2').value.trim();
@@ -57,7 +57,7 @@
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ username, phone_number, password, password2 })
+    body: JSON.stringify({ nickname, phone_number, password, password2 })
   });
 
   const result = await response.json();

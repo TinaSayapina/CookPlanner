@@ -9,7 +9,7 @@ from database import Base
 class User(Base):
     __tablename__ = "user"
     id = Column(Integer, primary_key=True, autoincrement=True)
-    username = Column(String, unique=True)
+    nickname = Column(String, unique=True)
     phone_number = Column(String, unique=True)
-    password = Column(String, nullable=True)
+    password = Column(String)
     reg_date = Column(DateTime, default=lambda: datetime.now())
