@@ -10,7 +10,7 @@ import re
 
 # схема для логина
 class UserLoginSchema(BaseModel):
-    nickname: str
+    login: str
     password: str
     
 # схема для регистрации
@@ -33,7 +33,7 @@ async def registration(info: RegistrationSchema):
 @user_router.post("/login")
 async def login_with_jwt(credentials: UserLoginSchema,
                          response: Response):
-    result = login_db(credentials.nickname, credentials.password)
+    result = login_db(credentials.login, credentials.password)
     if result:
         token = security.create_access_token(uid='101')
         # сохраняем токен в куки пользователя

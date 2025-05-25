@@ -28,6 +28,13 @@ async def register(request:Request):
         request=request, name="register.html"
     )
 
+# Login html
+@app.get("/login", response_class=HTMLResponse)
+async def register(request:Request):
+    return templates.TemplateResponse(
+        request=request, name="login.html"
+    )
+
 
 @app.get("/items/{id}", response_class=HTMLResponse)
 async def read_item(request: Request, id: str):

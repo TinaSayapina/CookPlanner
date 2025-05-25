@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Логин пользователя</title>
+    <link href="{{ url_for('static', path='/styles.css') }}" rel="stylesheet">
+
+</head>
+<body>
+<div class="registration-form" style="margin-top: 40px; width: 100%; max-width: 400px;">
+  <h2 style="color: #6c5ce7; margin-bottom: 20px;">Логин</h2>
+  <form id="registerForm" style="display: flex; flex-direction: column; gap: 15px;">
+    <input type="text" id="login" placeholder="Логин" required
+      style="padding: 12px 20px; border: 2px solid #dfe6e9; border-radius: 8px; font-size: 1rem; outline: none; transition: border-color 0.2s;">
+
+    <input type="password" id="password" placeholder="Пароль" required
+      style="padding: 12px 20px; border: 2px solid #dfe6e9; border-radius: 8px; font-size: 1rem; outline: none; transition: border-color 0.2s;">
+
+    <button type="submit" style="
+      padding: 12px 20px; background-color: #6c5ce7; color: #fff; border: none; border-radius: 8px; font-size: 1rem;
+      cursor: pointer; transition: background-color 0.2s;">Войти</button>
+  </form>
+</div>
+<script>
+  document.getElementById('registerForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const login = document.getElementById('login').value.trim();
+  const password = document.getElementById('password').value.trim();
+
+  // Отправляем POST-запрос
+  const response = await fetch('/user/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ login, password })
+  });
+
+  const result = await response.json();
+  console.log(result)
+});
+</script>
+</body>
+</html>

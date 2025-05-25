@@ -32,7 +32,7 @@
   e.preventDefault();
 
   const nickname = document.getElementById('nickname').value.trim();
-  const phone_str = document.getElementById('phone').value.trim();
+  const phone_number = document.getElementById('phone').value.trim();
   const password = document.getElementById('password').value.trim();
   const password2 = document.getElementById('password2').value.trim();
 
@@ -47,9 +47,6 @@
      // alert('Введите корректный номер телефона');
      // return;
    // }
-
-  // Конвертируем номер телефона в число (если нужно)
-  const phone_number = parseInt(phone_str);
 
   // Отправляем POST-запрос
   const response = await fetch('/user/register', {
