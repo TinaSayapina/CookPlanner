@@ -1,6 +1,9 @@
 from fastapi import APIRouter, HTTPException, status
 from pydantic import BaseModel
 import openai
+from deep_translator import GoogleTranslator
+from deepinfra.main import *
+
 
 # importing os module for environment variables
 import os
@@ -36,6 +39,11 @@ async def chat_gpt(request: PromptRequest):
             messages=[{"role": "user", "content": f"Напиши список ингредиентов для {request} списком через запятую"}],
             max_tokens=50
         )
+
+        # Переводим промпт на английский при помощи сервиса Google translator
+        prompt_en = GoogleTranslator(source='auto', target='en').translate(request.prompt)
+        # Генерируем картинку по промпту с помощью api сервиса deepinfra
+        generate_image(prompt=prompt_en)
         return {
             "status": 200,
             "message": response.choices[0].message.content
