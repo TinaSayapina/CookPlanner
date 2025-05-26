@@ -7,6 +7,8 @@ from fastapi.responses import JSONResponse
 from jwt_auth.main import config, security
 from database.userservice import *
 import re
+from fastapi.responses import RedirectResponse
+
 
 # схема для логина
 class UserLoginSchema(BaseModel):
@@ -22,32 +24,51 @@ class RegistrationSchema(BaseModel):
 # маршрут для юзеров
 user_router = APIRouter(prefix="/user", tags=["Пользовательская часть"])
 
+# Регистрация
 @user_router.post("/register")
-async def registration(info: RegistrationSchema):
+async def registration(info: RegistrationSchema, response: Response):
     result = registration_db(**dict(info))
-    if result:
-        return {"status": 1, "message": result}
-    return {"status": 0, "message": "ошибка"}
 
-
-@user_router.post("/login")
-async def login_with_jwt(credentials: UserLoginSchema,
-                         response: Response):
-    result = login_db(credentials.login, credentials.password)
-    if result:
+    # Проверяем результат, если пришел id пользователя, значит присваиваем токен
+    if isinstance(result, int):
         token = security.create_access_token(uid='101')
         # сохраняем токен в куки пользователя
         response.set_cookie(config.JWT_ACCESS_COOKIE_NAME, token)
-        return {"access_token": token}
-    raise HTTPException(status_code=401, detail={"ошибка": "неправильный логин или пароль"})
+        return {
+            "access_token": token,
+            "status":1
+        }
+    return {"status": 0, "message": result}
+
+# Логин
+@user_router.post("/login")
+async def login_with_jwt(credentials: UserLoginSchema, response: Response):
+    result = login_db(credentials.login, credentials.password)
+
+    # Проверяем результат, если пришел id пользователя, значит присваиваем токен
+    if isinstance(result, int):
+        token = security.create_access_token(uid='101')
+        # сохраняем токен в куки пользователя
+        response.set_cookie(config.JWT_ACCESS_COOKIE_NAME, token)
+        return {
+            "access_token": token,
+            "status": 1
+        }
+    return {"status": 0, "message": result}
 
 
 # функция с проверкой токена
 @user_router.get("/test", dependencies=[Depends(security.access_token_required)])
 async def test(request: Request):
     return "ok"
+
 # функция для выхода из аккаунта
-@user_router.get("/logout",  dependencies=[Depends(security.access_token_required)])
+@user_router.get("/logout")
 async def logout(response: Response, request: Request):
-    response.delete_cookie(config.JWT_ACCESS_COOKIE_NAME)
-    return {"message": "Вы успешно вышли из аккаунта"}
+    response = RedirectResponse(url='/')
+    response.delete_cookie(
+        key=config.JWT_ACCESS_COOKIE_NAME,
+        path='/',
+    )
+    return response
+

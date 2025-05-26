@@ -74,10 +74,11 @@
   }
 
   li {
-    background-color: #e0e0e0;
+    background-color: #6c5ce721;
     padding: 10px;
     margin-bottom: 8px;
     border-radius: 6px;
+    min-width: 300px;
   }
 
     /* Навбар стили */

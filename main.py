@@ -14,11 +14,14 @@ app = FastAPI(docs_url="/docs")
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
+
 # Homepage html
 @app.get("/", response_class=HTMLResponse)
 async def homepage(request:Request):
+    has_token = bool(request.cookies.get('my_projects_token'))
+
     return templates.TemplateResponse(
-        request=request, name="index.html"
+        request=request, name="index.html",context={"token": has_token}
     )
 
 # Registration html
@@ -34,6 +37,8 @@ async def register(request:Request):
     return templates.TemplateResponse(
         request=request, name="login.html"
     )
+
+
 
 
 @app.get("/items/{id}", response_class=HTMLResponse)

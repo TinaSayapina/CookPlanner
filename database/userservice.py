@@ -34,3 +34,5 @@ def login_db(login, password):
             if not check_pw(password, user.password):
                 return False
             return user.id
+
+        return "Юзер не найден"

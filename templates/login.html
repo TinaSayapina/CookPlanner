@@ -19,6 +19,9 @@
     <button type="submit" style="
       padding: 12px 20px; background-color: #6c5ce7; color: #fff; border: none; border-radius: 8px; font-size: 1rem;
       cursor: pointer; transition: background-color 0.2s;">Войти</button>
+
+    <p style="color:red;" id="error"></p>
+
   </form>
 </div>
 <script>
@@ -27,6 +30,8 @@
 
   const login = document.getElementById('login').value.trim();
   const password = document.getElementById('password').value.trim();
+  const error = document.getElementById('error');
+  error.innerText = "";
 
   // Отправляем POST-запрос
   const response = await fetch('/user/login', {
@@ -38,7 +43,12 @@
   });
 
   const result = await response.json();
-  console.log(result)
+
+  if (result.status === 1) { // предполагается, что успешная регистрация возвращает статус 1
+      window.location.href = '/'; // редирект на главную
+    } else {
+        error.innerText = result.message;
+    }
 });
 </script>
 </body>

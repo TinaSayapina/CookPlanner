@@ -33,8 +33,8 @@ async def chat_gpt(request: PromptRequest):
     try:
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
-            messages=[{"role": "user", "content": f"Напиши ингредиенты для {request}"}],
-            max_tokens=10
+            messages=[{"role": "user", "content": f"Напиши список ингредиентов для {request} списком через запятую"}],
+            max_tokens=50
         )
         return {
             "status": 200,

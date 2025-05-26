@@ -8,8 +8,13 @@
 <body>
 <!-- Навбар -->
 <div class="navbar">
+   {% if token %}
+  <a href="/profile">Профайл</a>
+  <a href="/user/logout">Выйти</a>
+    {% else %}
   <a href="/register">Регистрация</a>
   <a href="/login">Логин</a>
+    {% endif %}
 </div>
 <h1>Найди рецепт и ингредиенты</h1>
 
@@ -18,7 +23,13 @@
   <button onclick="getIngredients()">Найти рецепт</button>
 
 </div>
+
   <p id="result"></p>
+<ul>
+  <li><input type="checkbox" id="beet" /> <label for="beet">Свекла</label></li>
+
+</ul>
+<ul id="ingredientsList"></ul>
 
 </body>
 
@@ -41,12 +52,42 @@
 
     const data = await response.json();
     if (data.status === 200) {
-    document.getElementById('result').textContent = data.message;
+
+        populateIngredients(data.message);
+
     } else {
       alert(data.message);
     }
-
   }
+
+  function populateIngredients(text) {
+    // разделяем строку по запятым и убираем лишние пробелы
+    const items = text.split(',').map(item => item.trim());
+
+    const listContainer = document.getElementById('ingredientsList');
+    listContainer.innerHTML = ''; // очищаем список перед добавлением
+
+    items.forEach((ingredient, index) => {
+        // создаем элементы li, input и label
+        const li = document.createElement('li');
+        const checkboxId = `ingredient_${index}`; // уникальный id для input
+
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.id = checkboxId;
+
+        const label = document.createElement('label');
+        label.htmlFor = checkboxId;
+        label.textContent = ingredient;
+
+        // вставляем в li
+        li.appendChild(checkbox);
+        li.appendChild(label);
+
+        // вставляем li в список
+        listContainer.appendChild(li);
+    });
+}
 </script>
 </html>
 
