@@ -3,7 +3,7 @@ from pydantic import BaseModel
 import openai
 from deep_translator import GoogleTranslator
 from deepinfra.main import *
-
+import hashlib
 
 # importing os module for environment variables
 import os
@@ -18,6 +18,8 @@ recepe_router = APIRouter(prefix="/recepe", tags=["РЕЦЕПТЫ И ИНГРЕ�
 
 # Достаем апи ключ openai из файла .env
 openai.api_key = os.getenv("API_KEY")
+
+cache = {}
 
 
 # Делаем строгую типизацию
@@ -34,9 +36,21 @@ async def chat_gpt(request: PromptRequest):
             "message": "Введите правильное название блюда"
         }
     try:
+
+        # Создаем хэш ключа по входному запросу
+        key = hashlib.sha256(request.prompt.encode()).hexdigest()
+        # Проверяем наличие в кеше
+        if key in cache:
+            print("Кеш найден: ", cache[key])
+            return {
+                "status": 200,
+                "message": cache[key]
+            }
+
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
-            messages=[{"role": "user", "content": f"Напиши список ингредиентов для {request} списком через запятую"}],
+            messages=[{"role": "user",
+                       "content": f"Напиши только список ингредиентов для {request.prompt} через запятую, без дополнительных слов."}],
             max_tokens=50
         )
 
@@ -44,12 +58,19 @@ async def chat_gpt(request: PromptRequest):
         prompt_en = GoogleTranslator(source='auto', target='en').translate(request.prompt)
         # Генерируем картинку по промпту с помощью api сервиса deepinfra
         generate_image(prompt=prompt_en)
+
+        # Сохраняем в кеш
+        result = response.choices[0].message.content
+        cache[key] = result
+        print("Обновленный кеш:", cache)  # Выводит все содержимое кеша
+
         return {
             "status": 200,
-            "message": response.choices[0].message.content
+            "message": result
         }
     except Exception as error:
         return {
             "status": 0,
             "message": f"Ошибка {error}"
         }
+
