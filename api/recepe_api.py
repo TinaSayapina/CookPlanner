@@ -82,9 +82,11 @@ async def chat_gpt(request: PromptRequest):
             )
 
             # Переводим промпт на английский при помощи сервиса Google translator
-            prompt_en = GoogleTranslator(source='auto', target='en').translate(prompt)
+            # Временно отключила
+            # prompt_en = GoogleTranslator(source='auto', target='en').translate(prompt)
             # Генерируем картинку по промпту с помощью api сервиса deepinfra
-            generate_image(prompt=prompt_en)
+            # Временно отключила из-за того что закончилась подписка
+            # generate_image(prompt=prompt_en)
 
             # Сохраняем в кеш
             result = response.choices[0].message.content

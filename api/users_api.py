@@ -54,7 +54,6 @@ async def registration(info: RegistrationSchema, response: Response):
 @user_router.post("/login")
 async def login_with_jwt(credentials: UserLoginSchema, response: Response):
     result = login_db(credentials.login, credentials.password)
-    print(result)
 
     if result:
         token = security.create_access_token(uid='101')

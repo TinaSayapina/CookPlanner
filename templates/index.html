@@ -127,10 +127,12 @@
                     data.data.forEach(recipe => {
                         const li = document.createElement('li');
                         li.textContent = recipe.name;
-                        li.onclick = () => populateIngredients(recipe.ingredients);
                         li.onclick = () => {
                             dishField.value = recipe.name;
+                            populateIngredients(recipe.ingredients);
+
                         }
+
                         ul.appendChild(li);
                     });
                 } else {
