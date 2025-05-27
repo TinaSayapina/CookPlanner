@@ -1,9 +1,13 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Response
 from pydantic import BaseModel
 import openai
 from deep_translator import GoogleTranslator
+
+from database.recepeservice import add_recepe_db
 from deepinfra.main import *
 import hashlib
+from fastapi.responses import JSONResponse
+from typing import List, Optional
 
 # importing os module for environment variables
 import os
@@ -22,10 +26,16 @@ openai.api_key = os.getenv("API_KEY")
 cache = {}
 
 
-# Делаем строгую типизацию
+# Делаем строгую типизацию для промпта
 class PromptRequest(BaseModel):
     prompt: str
 
+# Делаем строгую типизацию для рецепта
+class RecipeBase(BaseModel):
+    name: str
+    ingredients: str
+    recipe: str
+    pp_recipe: Optional[str] = None
 
 @recepe_router.post("/recepe")
 async def chat_gpt(request: PromptRequest):
@@ -74,3 +84,15 @@ async def chat_gpt(request: PromptRequest):
             "message": f"Ошибка {error}"
         }
 
+
+
+# Admin
+@recepe_router.post("/new")
+async def addRecepe(info:RecipeBase, response: Response):
+
+    result =add_recepe_db(name=info.name, ingredients=info.ingredients, recipe=info.recipe, pp_recipe=info.pp_recipe)
+    print(result.get('status'))
+    if result.get('status') == 1:
+        ...
+    elif result.get('status') == 0:
+        return {"status": 0, "message": result.get("message")}

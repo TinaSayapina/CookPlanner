@@ -1,5 +1,3 @@
-from http.client import HTTPException
-
 from database import get_db
 from database.models import *
 from sqlalchemy import or_

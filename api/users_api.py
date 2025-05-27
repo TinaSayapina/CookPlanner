@@ -1,4 +1,3 @@
-from pydantic import BaseModel
 from fastapi import (APIRouter, Request,
                      Response, HTTPException,
                      Depends)
@@ -6,8 +5,8 @@ from authx.exceptions import AuthXException
 from fastapi.responses import JSONResponse
 from jwt_auth.main import config, security
 from database.userservice import *
-import re
 from fastapi.responses import RedirectResponse
+
 
 
 # схема для логина
