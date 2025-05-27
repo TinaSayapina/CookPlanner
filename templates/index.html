@@ -20,17 +20,19 @@
 <!-- Sidebar -->
 <div class="sidebar">
   <h3>Популярные блюда</h3>
+<!--      <ul id="recipesList"></ul>-->
+
   <ul id="dishList">
-    <li>Борщ</li>
-    <li>Оливье</li>
-    <li>Нежный куриный бульйон</li>
-    <li>Пельмени</li>
-    <li>Блины</li>
-    <li>Котлета по-киевски</li>
-    <li>Салат «Мимоза»</li>
-    <li>Щи</li>
-    <li>Гречка с мясом</li>
-    <li>Каша манная</li>
+<!--    <li>Борщ</li>-->
+<!--    <li>Оливье</li>-->
+<!--    <li>Нежный куриный бульйон</li>-->
+<!--    <li>Пельмени</li>-->
+<!--    <li>Блины</li>-->
+<!--    <li>Котлета по-киевски</li>-->
+<!--    <li>Салат «Мимоза»</li>-->
+<!--    <li>Щи</li>-->
+<!--    <li>Гречка с мясом</li>-->
+<!--    <li>Каша манная</li>-->
   </ul>
 </div>
 
@@ -101,6 +103,33 @@
         listContainer.appendChild(li);
     });
 }
+
+   // функция для получения популярных рецептов
+        async function fetchPopularRecipes() {
+            try {
+                const response = await fetch('/recepe/popular');
+                const data = await response.json();
+
+                if (response.ok && data.data) {
+                    const ul = document.getElementById('dishList');
+                    ul.innerHTML = ''; // очистить список
+
+                    data.data.forEach(recipe => {
+                        const li = document.createElement('li');
+                        li.textContent = recipe.name;
+                        li.onclick = () => populateIngredients(recipe.ingredients);
+                        ul.appendChild(li);
+                    });
+                } else {
+                    console.error('Ошибка получения данных:', data);
+                }
+            } catch (err) {
+                console.error('Ошибка запроса:', err);
+            }
+        }
+
+        // вызов при загрузке страницы
+        window.onload = fetchPopularRecipes;
 </script>
 </html>
 

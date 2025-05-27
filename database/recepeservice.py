@@ -27,3 +27,10 @@ def get_recepe_db(name):
     with next(get_db()) as db:
         recepe = db.query(Recipe).filter(Recipe.name == name).first()
         return False if not recepe else recepe
+
+# Получаем список рецептов из бд
+def get_popular_recepes():
+    with next(get_db()) as db:
+        recepes = db.query(Recipe).all()
+        return False if not recepes else recepes[:10]
+

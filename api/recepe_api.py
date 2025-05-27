@@ -4,7 +4,7 @@ from pydantic import BaseModel
 import openai
 from deep_translator import GoogleTranslator
 
-from database.recepeservice import add_recepe_db, get_recepe_db
+from database.recepeservice import *
 from deepinfra.main import *
 import hashlib
 from fastapi.responses import JSONResponse
@@ -112,3 +112,20 @@ async def addRecepe(info:RecipeBase, response: Response):
         return {"status": 1, "message": result.get("message")}
     elif result.get('status') == 0:
         return {"status": 0, "message": result.get("message")}
+
+@recepe_router.get("/popular")
+async def getPopular():
+    top10 = get_popular_recepes()
+    if not top10:
+        return {"status": 404, "message": "Нет популярных рецептов"}
+    serialized = [serialize_recipe(r) for r in top10]
+    return {"status": 200, "data": serialized}
+
+def serialize_recipe(recipe):
+    return {
+        "id": recipe.id,
+        "name": recipe.name,
+        "ingredients": recipe.ingredients,
+        "recipe": recipe.recipe,
+        "pp_recipe": recipe.pp_recipe
+    }
