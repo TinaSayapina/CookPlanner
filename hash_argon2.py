@@ -11,8 +11,7 @@ def check_pw(password: str, hashed_password: str) -> bool:
     except VerifyMismatchError:
         return False
     except Exception:
-        return "что-то не так"
-password = "admin"
-hashed = hash_password(password)
+        return False
+
 # print(hashed)
 # print(check_pw(123, hashed))

@@ -9,20 +9,28 @@ from hash_argon2 import *
 def registration_db(nickname, phone_number, password):
     # Проверка на уникальность логина и телефона
     with next(get_db()) as db:
-        user = db.query(User).filter(User.nickname == nickname).first()
         text = ""
+        user = db.query(User).filter(User.nickname == nickname).first()
         if user:
             text += "- юзернейм\n"
         user = db.query(User).filter(User.phone_number == phone_number).first()
         if user:
-            text += "-номер\n"
-        if user:
-            return text + "уже занят(-ы)"
+            text += "- номер\n"
+        if text:
+            # Если есть ошибки, возвращаем сообщение
+            return {
+                "status": 0,
+                "message": "Проблема с полями:\n" + text
+            }
+        # Создаем пользователя если все поля уникальны
         user = User(nickname=nickname, phone_number=phone_number, password=hash_password(password))
         db.add(user)
         db.commit()
         db.refresh(user)
-        return user.id
+        return {
+            "status": 1,
+            "message": user.id
+        }
 
 
 # вход в аккаунт (по нику или номеру)
@@ -35,4 +43,4 @@ def login_db(login, password):
                 return False
             return user.id
 
-        return "Юзер не найден"
+        return False

@@ -13,7 +13,7 @@
     <input type="text" id="nickname" placeholder="Логин" required
       style="padding: 12px 20px; border: 2px solid #dfe6e9; border-radius: 8px; font-size: 1rem; outline: none; transition: border-color 0.2s;">
 
-    <input type="tel" id="phone" placeholder="Телефон" required
+    <input type="number" id="phone" placeholder="Телефон" required
       style="padding: 12px 20px; border: 2px solid #dfe6e9; border-radius: 8px; font-size: 1rem; outline: none; transition: border-color 0.2s;">
 
     <input type="password" id="password" placeholder="Пароль" required
@@ -42,10 +42,10 @@
   error.innerText = "";
 
   // На всякий случай
-  if (password !== password2) {
-    alert('Пароли не совпадают');
-    return;
-  }
+  //if (password !== password2) {
+    //alert('Пароли не совпадают');
+    //return;
+  //}
 
   // Валидация для телефона регулярным выражением
     //if (!/^\+?\d{9}$/.test(phone)) {

@@ -10,6 +10,6 @@ class User(Base):
     __tablename__ = "user"
     id = Column(Integer, primary_key=True, autoincrement=True)
     nickname = Column(String, unique=True)
-    phone_number = Column(String, unique=True)
+    phone_number = Column(Integer, unique=True)
     password = Column(String)
     reg_date = Column(DateTime, default=lambda: datetime.now())
