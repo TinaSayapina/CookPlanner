@@ -3,8 +3,6 @@ from sqlalchemy import (Column, String, Integer,
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from database import Base
-from pydantic import BaseModel
-from typing import List, Optional
 
 # модель юзеров
 class User(Base):

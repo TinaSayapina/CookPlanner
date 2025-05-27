@@ -67,9 +67,7 @@
 
     const data = await response.json();
     if (data.status === 200) {
-
         populateIngredients(data.message);
-
     } else {
       alert(data.message);
     }

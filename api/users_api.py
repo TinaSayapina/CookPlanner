@@ -1,3 +1,4 @@
+from pydantic import BaseModel
 from fastapi import (APIRouter, Request,
                      Response, HTTPException,
                      Depends)
