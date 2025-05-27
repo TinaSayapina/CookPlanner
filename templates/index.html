@@ -23,16 +23,6 @@
 <!--      <ul id="recipesList"></ul>-->
 
   <ul id="dishList">
-<!--    <li>Борщ</li>-->
-<!--    <li>Оливье</li>-->
-<!--    <li>Нежный куриный бульйон</li>-->
-<!--    <li>Пельмени</li>-->
-<!--    <li>Блины</li>-->
-<!--    <li>Котлета по-киевски</li>-->
-<!--    <li>Салат «Мимоза»</li>-->
-<!--    <li>Щи</li>-->
-<!--    <li>Гречка с мясом</li>-->
-<!--    <li>Каша манная</li>-->
   </ul>
 </div>
 
@@ -48,9 +38,28 @@
 
 <ul id="ingredientsList"></ul>
 
+<!--<button onclick="addCookbook()">Добавить в мою книгу рецептов</button>-->
+
 </body>
 
 <script>
+  async function addCookbook(){
+    const dish = document.getElementById('dishInput').value.trim();
+    const response = await fetch('/cookbook/new', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ recepe_name: dish, user_id:1 })
+      });
+      const data = await response.json();
+        if (data.status === 200) {
+          alert("Рецепт сохранен!");
+        } else {
+          alert(data.message);
+        }
+  }
+
   async function getIngredients() {
     const dish = document.getElementById('dishInput').value.trim();
     // Проверка, что ввод только букв
@@ -106,6 +115,7 @@
 
    // функция для получения популярных рецептов
         async function fetchPopularRecipes() {
+        const dishField = document.getElementById('dishInput');
             try {
                 const response = await fetch('/recepe/popular');
                 const data = await response.json();
@@ -118,6 +128,9 @@
                         const li = document.createElement('li');
                         li.textContent = recipe.name;
                         li.onclick = () => populateIngredients(recipe.ingredients);
+                        li.onclick = () => {
+                            dishField.value = recipe.name;
+                        }
                         ul.appendChild(li);
                     });
                 } else {

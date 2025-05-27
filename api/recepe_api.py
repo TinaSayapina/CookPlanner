@@ -1,4 +1,3 @@
-from click import prompt
 from fastapi import APIRouter, HTTPException, status, Response
 from pydantic import BaseModel
 import openai

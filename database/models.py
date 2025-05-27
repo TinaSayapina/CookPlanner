@@ -22,15 +22,11 @@ class Recipe(Base):
     recipe = Column(String, nullable=False)
     pp_recipe = Column(String, nullable=True)
 
-    cookbooks = relationship("Cookbook", back_populates="recipe")
-
 class Cookbook(Base):
     __tablename__ = "cookbooks"
 
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, nullable=False)  # или ForeignKey("users.id")
-    recepe_id = Column(Integer, ForeignKey("recipes.id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    recepe_name = Column(String, nullable=False)
     notes = Column(String, nullable=True)
     cooked = Column(Boolean, default=False)
-
-    recipe = relationship("Recipe")
