@@ -30,10 +30,14 @@ async def registration(info: RegistrationSchema, response: Response):
     if info.password != info.password2:
         return {"status": 0, "message": "Пароли не совпадают"}
 
+    if len(info.password) < 5:
+        return {"status":0, "message":"Пароль должен содержать не менее 5 символов"}
+
     # Проверка номера телефона по регулярному выражению
-    phone_pattern = r"^\d{12}$"
+    phone_pattern = r"^\d{9}$"
     if not re.match(phone_pattern, str(info.phone_number)):
         return {"status": 0, "message": "Некорректный формат номера телефона"}
+
 
     result = registration_db(nickname=info.nickname, phone_number=info.phone_number,
                              password=info.password)
