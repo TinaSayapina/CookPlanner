@@ -2,19 +2,15 @@ from pydantic import BaseModel
 from fastapi import (APIRouter, Request,
                      Response, HTTPException,
                      Depends)
-from authx.exceptions import AuthXException
-from fastapi.responses import JSONResponse
 from jwt_auth.main import config, security
 from database.userservice import *
 from fastapi.responses import RedirectResponse
-
-
+import re
 
 # схема для логина
 class UserLoginSchema(BaseModel):
     login: str
     password: str
-
 
 # схема для регистрации
 class RegistrationSchema(BaseModel):
@@ -27,13 +23,17 @@ class RegistrationSchema(BaseModel):
 # маршрут для юзеров
 user_router = APIRouter(prefix="/user", tags=["Пользовательская часть"])
 
-
 # Регистрация
 @user_router.post("/register")
 async def registration(info: RegistrationSchema, response: Response):
     # Проверка совпадения паролей
     if info.password != info.password2:
         return {"status": 0, "message": "Пароли не совпадают"}
+
+    # Проверка номера телефона по регулярному выражению
+    phone_pattern = r"^\d{12}$"
+    if not re.match(phone_pattern, str(info.phone_number)):
+        return {"status": 0, "message": "Некорректный формат номера телефона"}
 
     result = registration_db(nickname=info.nickname, phone_number=info.phone_number,
                              password=info.password)

@@ -38,15 +38,6 @@ async def register(request:Request):
         request=request, name="login.html"
     )
 
-
-
-
-@app.get("/items/{id}", response_class=HTMLResponse)
-async def read_item(request: Request, id: str):
-    return templates.TemplateResponse(
-        request=request, name="item.html", context={"id": id}
-    )
-
 # первичная миграция
 Base.metadata.create_all(bind=engine)
 

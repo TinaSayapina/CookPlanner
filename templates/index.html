@@ -9,24 +9,28 @@
 <!-- Навбар -->
 <div class="navbar">
    {% if token %}
-  <a href="/profile">Профайл</a>
+  <a href="/">Добро пожаловать!</a>
   <a href="/user/logout">Выйти</a>
     {% else %}
   <a href="/register">Регистрация</a>
   <a href="/login">Логин</a>
     {% endif %}
 </div>
-
+<!-- Картинки под навбар -->
+<div style="display: flex; flex-wrap: wrap; justify-content: center; margin-top: 10px;">
+    <img src="{{ url_for('static', path='images/image1.png') }}" style="width: 150px; height: auto; margin: 5px;">
+    <img src="{{ url_for('static', path='images/image2.png') }}" style="width: 150px; height: auto; margin: 5px;">
+    <img src="{{ url_for('static', path='images/image3.png') }}" style="width: 150px; height: auto; margin: 5px;">
+    <img src="{{ url_for('static', path='images/image4.png') }}" style="width: 150px; height: auto; margin: 5px;">
+    <img src="{{ url_for('static', path='images/image5.png') }}" style="width: 150px; height: auto; margin: 5px;">
+</div>
 <!-- Sidebar -->
 <div class="sidebar">
   <h3>Популярные блюда</h3>
-<!--      <ul id="recipesList"></ul>-->
 
   <ul id="dishList">
   </ul>
 </div>
-
-
 
 <h1>Найди рецепт и ингредиенты</h1>
 
