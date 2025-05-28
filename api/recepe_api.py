@@ -130,3 +130,8 @@ def serialize_recipe(recipe):
         "recipe": recipe.recipe,
         "pp_recipe": recipe.pp_recipe
     }
+
+
+@recepe_router.post("/bulk-add")
+async def bulk_add():
+    add_bulk_recepes()
